@@ -628,6 +628,11 @@ class WindowManager(object):
             logging.debug("Falling back to _NET_WORKAREA: %s", desktop_geo)
             usable_region.intersect(gtk.gdk.region_rectangle(desktop_geo))
             usable_rect = usable_region.get_clipbox()
+            # jolamb - 08/31/2016 - NET_WM hints aren't working with FVWM, so program in my strut by hand:
+            usable_region.shrink(56,0)
+            usable_rect.width -= 57
+            usable_region.union_with_rect(usable_rect)
+            # END jolamb
 
         # FIXME: Only call get_rectangles if --debug
         logging.debug("Usable region of monitor calculated as:\n"
